@@ -34,6 +34,7 @@ export const BottomButton: React.FunctionComponent<{
 	onClick: () => void;
 }> = ({onClick}) => (
 	<Button
+		variant='link'
 		onClick={onClick}
 		size='sm'
 		style={{
