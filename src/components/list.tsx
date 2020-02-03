@@ -1,15 +1,9 @@
 import React, {useState} from 'react';
 import {Task, emptyTask} from './types';
-import {
-	ListGroup,
-	Form,
-	Button
-} from 'react-bootstrap';
+import {ListGroup, Form, Button} from 'react-bootstrap';
 
-const head = (a: Array<any>) => a[0];
-const tail = (a: Array<any>) => a.slice(1);
-const tailTip = (a: Array<any>) => a[a.length-1];
-const headAndShoulders = (a: Array<any>) => a.slice(0, -1);
+const tailTip = (a: any[]) => a[a.length-1];
+const headAndShoulders = (a: any[]) => a.slice(0, -1);
 
 const ActiveTaskForm: React.FC<{
 	pushTask: Function;
@@ -44,22 +38,6 @@ const ActiveTaskForm: React.FC<{
 	);
 };
 
-const ActiveTaskItem: React.FC<{
-	task: Task;
-}> = ({task}) => <TaskItem
-	task={task}
-	disabled={false}
-	active={true}
-/>
-
-const DisabledTaskItem: React.FC<{
-	task: Task;
-}> = ({task}) => <TaskItem
-	task={task}
-	disabled={true}
-	active={false}
-/>
-
 const TaskItem: React.FC<{
 	task: Task;
 	disabled: boolean;
@@ -70,6 +48,7 @@ const TaskItem: React.FC<{
 	}> = ({child}) => (
 		<ListGroup.Item
 			disabled
+			key={child.name ? child.name : child}
 		>
 			{child}
 		</ListGroup.Item>
@@ -100,18 +79,41 @@ const TaskItem: React.FC<{
 	                : ActiveItem({child});
 };
 
+const ActiveTaskItem: React.FC<{
+	task: Task;
+}> = ({task}) => <TaskItem
+	task={task}
+	disabled={false}
+	active={true}
+/>
+
+const DisabledTaskItem: React.FC<{
+	task: Task;
+}> = ({task}) => <TaskItem
+	task={task}
+	disabled={true}
+	active={false}
+/>
+
 export const TaskList: React.FC<{
 	initialTasks: Array<Task>;
 }> = ({initialTasks = []}) => {
-	const [activeTask, setActiveTask] = useState(head(initialTasks));
-	const [inactiveTasks, setInactiveTasks] = useState(tail(initialTasks));
+	const [activeTask, setActiveTask] = useState(tailTip(initialTasks));
+	const [inactiveTasks, setInactiveTasks] = useState(headAndShoulders(initialTasks));
 
 	const pushTask = (newActive: Task) => {
-		const oldActive = activeTask;
-		setActiveTask(newActive);
-		setInactiveTasks(
-			[...inactiveTasks, oldActive]
-		);
+		/* const oldActive = activeTask; */
+		/* setActiveTask(newActive); */
+		if (!activeTask.name) {
+			setActiveTask(newActive);
+			setInactiveTasks(
+				inactiveTasks
+			);
+		} else {
+			setInactiveTasks(
+				[newActive, ...inactiveTasks]
+			);
+		}
 	};
 
 	const deleteTask = () => {
