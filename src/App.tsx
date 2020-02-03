@@ -8,6 +8,8 @@ const initialTasks = [{
 	name: ''
 }];
 
+const HELP_MESSAGE = "When somebody raises their hand, type their name into the box at the top. When they're done talking, press the 'next speaker' button to move the meeting forward.";
+
 const App: React.FC = () => {
 	const [show, setShow] = useState(false);
 	const handleCloseModal = () => setShow(false);
@@ -18,6 +20,7 @@ const App: React.FC = () => {
 				show={show}
 				handleClose={handleCloseModal}
 				handleOpen={handleOpenModal}
+				helpMessage={HELP_MESSAGE}
 			/>
 			<TaskList
 				initialTasks={initialTasks}

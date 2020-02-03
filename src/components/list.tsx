@@ -123,11 +123,11 @@ export const TaskList: React.FC<{
 
 	const deleteButton = (
 		<Button
-			variant="danger"
+			variant="success"
 			block
 			onClick={deleteTask}
 		>
-			DELETE DELETE DELETE 
+			NEXT SPEAKER
 		</Button>
 	);
 
